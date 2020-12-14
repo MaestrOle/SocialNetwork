@@ -13,7 +13,7 @@ using Neo4jClient.Cypher;
 
 namespace DAL.Neo4j.Concrete
 {
-    public class UserDalNeo4j : IUserDALNeo4j
+    public class UserDalNeo4j : IUserDalNeo4j
     {
         private string connectionString;
         private string login;
@@ -24,7 +24,7 @@ namespace DAL.Neo4j.Concrete
             this.login = login;
             this.pass = pass;
         }
-        public void AddRelationship(UserLableDTO u1, UserLableDTO u2)
+        public void AddRelationship(UserDTO u1, UserDTO u2)
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))
             {
@@ -55,7 +55,7 @@ namespace DAL.Neo4j.Concrete
             }
         }
 
-        public void AddUser(UserLableDTO u)
+        public void AddUser(UserDTO u)
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))
             {
@@ -72,15 +72,15 @@ namespace DAL.Neo4j.Concrete
 
 
 
-        public bool HasRelationship(UserLableDTO u1, UserLableDTO u2)
+        public bool HasRelationship(UserDTO u1, UserDTO u2)
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))
             {
                 client.Connect();
                 var is_friends = client.Cypher
                    .Match("(user1:User)-[r:Friends]-(user2:User)")
-                   .Where((UserLableDTO user1) => user1.User_Id == u1.User_Id)
-                   .AndWhere((UserLableDTO user2) => user2.User_Id == u2.User_Id)
+                   .Where((UserDTO user1) => user1.User_Id == u1.User_Id)
+                   .AndWhere((UserDTO user2) => user2.User_Id == u2.User_Id)
                    .Return(r => r.As<Friends>()).Results;
                 if (is_friends.Count() > 0)
                 {
@@ -91,7 +91,7 @@ namespace DAL.Neo4j.Concrete
             }
         }
 
-        public int MinPathBetween(UserLableDTO u1, UserLableDTO u2)
+        public int MinPathBetween(UserDTO u1, UserDTO u2)
         {
             return this.MinPathBetween(u1.User_Id, u2.User_Id);
         }
@@ -116,7 +116,7 @@ namespace DAL.Neo4j.Concrete
                 return path_len;
             }
         }
-        public void DeleteRelationship(UserLableDTO u1, UserLableDTO u2)
+        public void DeleteRelationship(UserDTO u1, UserDTO u2)
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))
             {
@@ -148,7 +148,7 @@ namespace DAL.Neo4j.Concrete
             }
         }
 
-        public void DeleteUser(UserLableDTO u)
+        public void DeleteUser(UserDTO u)
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))
             {
@@ -163,17 +163,17 @@ namespace DAL.Neo4j.Concrete
             }
         }
 
-        public UserLableDTO GetUser(int id)
+        public UserDTO GetUser(int id)
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))
             {
                 client.Connect();
                 var user = client.Cypher
                     .Match("(u:User)")
-                    .Where((UserLableDTO u) => u.User_Id == id)
-                    .Return(u => u.As<UserLableDTO>())
+                    .Where((UserDTO u) => u.User_Id == id)
+                    .Return(u => u.As<UserDTO>())
                     .Results;
-                UserLableDTO to_ret = new UserLableDTO() { User_Id = id };
+                UserDTO to_ret = new UserDTO() { User_Id = id };
                 foreach (var u in user)
                 {
                     to_ret.User_Id = u.User_Id;
