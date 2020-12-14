@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CassandraCSharpDriver" Version="3.16.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BussinesLogic\BussinesLogic.csproj" />
+    <ProjectReference Include="..\DAL.Cassandra\DAL.Cassandra.csproj" />
+    <ProjectReference Include="..\DAL.MongoDB\DAL.MongoDB.csproj" />
+    <ProjectReference Include="..\DAL.Neo4j\DAL.Neo4j.csproj" />
+    <ProjectReference Include="..\DTO.Cassandra\DTO.Cassandra.csproj" />
+    <ProjectReference Include="..\DTO.MongoDB\DTO.MongoDB.csproj" />
+    <ProjectReference Include="..\DTO.Neo4j\DTO.Neo4j.csproj" />
+  </ItemGroup>
+
+</Project>
